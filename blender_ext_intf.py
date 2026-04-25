@@ -2,6 +2,7 @@ import socket
 import serial
 import time
 import threading
+import cProfile
 
 ### ---
 
@@ -59,5 +60,5 @@ data_thread = threading.Thread(target=fake_send, daemon=True)
 data_thread.start()
 
 while data_thread.is_alive():
-    pass
+    time.sleep(0.1)
 
