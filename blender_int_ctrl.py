@@ -21,3 +21,5 @@ def udp_listener():
         
     sock.close()
     print("End")
+    
+threading.Thread(target=udp_listener, daemon=True).start()
