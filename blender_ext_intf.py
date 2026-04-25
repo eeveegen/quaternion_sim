@@ -43,8 +43,13 @@ def fake_send():
     
     data_sock.close()
     print("Demo finished.")
+    return
 
     
 threading.Thread(target=watchdog, daemon=True).start()
-threading.Thread(target=fake_send).start()
+data_thread = threading.Thread(target=fake_send, daemon=True)
+data_thread.start()
+
+while data_thread.is_alive():
+    pass
 
