@@ -4,6 +4,7 @@ import socket
 import threading
 
 DATA_TIMEOUT = 5
+OBJ = bpy.data.objects["Cube"]
 
 print("Start")
 
@@ -19,8 +20,8 @@ def udp_listener():
             data, _ = sock.recvfrom(1024)
             ack_sock.sendto("ACK".encode(), ("127.0.0.1", 5006))
             
-            msg = data.decode().strip()
-            print(msg)
+            euler = eval(data.decode().strip())
+            OBJ.rotation_euler = euler
         except socket.timeout:
             print("Timeout -> terminating!")
             break

@@ -8,3 +8,5 @@ To set it up:
 - Copy blender_int_ctrl.py's contents within the text editor
 - Start internal and external file shortly after one another (Blender internal file started by "play" arrow above Text Editor)
 
+Serial data should be supplied in the format "[%f, %f, %f]".
+

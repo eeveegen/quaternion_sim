@@ -1,12 +1,24 @@
 import socket
+import serial
 import time
 import threading
 
+### ---
+
+# serial port variables
+SERIAL_PORT = "COM3"
+SERIAL_RATE = 115200
+
+# blender script communication variables
 UDP_IP = "127.0.0.1"
 DATA_PORT = 5005
 HB_PORT = 5006 # back connection -> listen for heartbeat
 
+# custom timeout
 BLENDER_TIMEOUT = 7 # seconds
+
+### ---
+
 timeout = False
 
 def watchdog():
@@ -27,17 +39,13 @@ def watchdog():
 
 def fake_send():
     data_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    i = 0
+    ser = serial.Serial(port=SERIAL_PORT, baudrate=SERIAL_RATE, timeout=5)
 
     while True:
-        msg = "Running " + str(i)
+        msg = ser.readline()
         print(msg)
-        data_sock.sendto(msg.encode(), (UDP_IP, DATA_PORT))
-        i = i + 1
-        time.sleep(1)
+        data_sock.sendto(msg, (UDP_IP, DATA_PORT))
 
-        if i > 15:
-            break
         if timeout:
             break
     
