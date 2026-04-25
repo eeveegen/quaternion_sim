@@ -1,16 +1,23 @@
-# run this file in blender's project's text editor
+# run this file within blender
+import bpy
 import socket
-import time
+import threading
 
-UDP_IP = "127.0.0.1"
-UDP_PORT = 5005
+print("Start")
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-for i in range(15):
-    msg = "Running " + str(i)
-    print(msg)
-    sock.sendto(msg.encode(), (UDP_IP, UDP_PORT))
-    time.sleep(1)
-
-print("Completed!")
+def udp_listener():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(("127.0.0.1", 5005))
+    sock.settimeout(5.0)
+    
+    while True:    
+        try:
+            data, _ = sock.recvfrom(1024)
+            msg = data.decode().strip()
+            print(msg)
+        except socket.timeout:
+            print("Timeout -> terminating!")
+            break
+        
+    sock.close()
+    print("End")
